@@ -1,0 +1,37 @@
+services:
+  auth-service:
+    build:
+      context: ./server/auth-service  # Builds from the auth-service directory
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"  # Expose the auth-service on port 4000
+    depends_on:
+      - postgres  # Ensure PostgreSQL is running before auth-service starts
+    env_file:
+      - ./server/auth-service/.env  # Use .env file specific to auth-service
+
+  todo-service:
+    build:
+      context: ./server/todo-service
+      dockerfile: Dockerfile
+    ports:
+      - "4001:4001"
+    depends_on:
+      - postgres
+      - auth-service
+    env_file:
+      - ./server/todo-service/.env
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Holo4life
+      POSTGRES_DB: todo
+    ports:
+      - "5433:5432"  # Expose PostgreSQL on port 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persist PostgreSQL data
+
+volumes:
+  postgres_data:

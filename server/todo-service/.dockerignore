@@ -1,0 +1,10 @@
+node_modules
+# src/**/*.ts
+Dockerfile
+.env
+*.log
+.git
+.gitignore
+npm-debug.log
+yarn-debug.log*
+yarn-error.log*
